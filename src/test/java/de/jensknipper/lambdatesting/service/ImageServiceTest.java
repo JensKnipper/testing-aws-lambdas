@@ -17,8 +17,8 @@ class ImageServiceTest {
   @Test
   void shouldResizeImage() throws IOException {
     // given
-    File testImage = new File("src/test/resources/image.jpg");
-    BufferedImage image = ImageIO.read(testImage);
+    final File testImage = new File("src/test/resources/image.png");
+    final BufferedImage image = ImageIO.read(testImage);
 
     // when
     final BufferedImage resizedImage = imageService.resize(image);
@@ -28,7 +28,7 @@ class ImageServiceTest {
     assertThat(resizedImage.getWidth()).isLessThanOrEqualTo(maxDimension);
 
     // manual testing only
-    File outFile = new File("target/image.jpg");
+    final File outFile = new File("target/image.png");
     ImageIO.write(resizedImage, "jpg", outFile);
   }
 }

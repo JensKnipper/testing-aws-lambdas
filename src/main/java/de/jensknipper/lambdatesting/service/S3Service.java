@@ -26,13 +26,14 @@ public class S3Service {
             .build();
   }
 
-  public InputStream getObject(String bucket, String key) {
-    GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucket).key(key).build();
+  public InputStream getObject(final String bucket, final String key) {
+    final GetObjectRequest getObjectRequest =
+        GetObjectRequest.builder().bucket(bucket).key(key).build();
     return s3Client.getObjectAsBytes(getObjectRequest).asInputStream();
   }
 
   public String uploadFile(
-      final String bucketName, final String fileKey, ByteArrayOutputStream fileStream) {
+      final String bucketName, final String fileKey, final ByteArrayOutputStream fileStream) {
     final PutObjectRequest putObjectRequest =
         PutObjectRequest.builder().bucket(bucketName).key(fileKey).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromBytes(fileStream.toByteArray()));

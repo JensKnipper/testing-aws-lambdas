@@ -15,21 +15,21 @@ public class ImageService {
 
   private final int maxDimension;
 
-  public ImageService(int maxDimension) {
+  public ImageService(final int maxDimension) {
     this.maxDimension = maxDimension;
   }
 
-  public BufferedImage resize(BufferedImage srcImage) {
-    int srcHeight = srcImage.getHeight();
-    int srcWidth = srcImage.getWidth();
+  public BufferedImage resize(final BufferedImage srcImage) {
+    final int srcHeight = srcImage.getHeight();
+    final int srcWidth = srcImage.getWidth();
 
-    float scalingFactor =
+    final float scalingFactor =
         Math.min(maxDimension / (float) srcWidth, maxDimension / (float) srcHeight);
-    int width = (int) (scalingFactor * srcWidth);
-    int height = (int) (scalingFactor * srcHeight);
+    final int width = (int) (scalingFactor * srcWidth);
+    final int height = (int) (scalingFactor * srcHeight);
 
-    BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    Graphics2D graphics = resizedImage.createGraphics();
+    final BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    final Graphics2D graphics = resizedImage.createGraphics();
 
     graphics.setPaint(Color.white);
     graphics.fillRect(0, 0, width, height);
@@ -41,7 +41,7 @@ public class ImageService {
     return resizedImage;
   }
 
-  public Optional<String> getImageExtension(String filename) {
+  public Optional<String> getImageExtension(final String filename) {
     return Optional.ofNullable(filename)
         .filter(f -> f.contains("."))
         .map(f -> f.substring(filename.lastIndexOf(".") + 1))

@@ -85,15 +85,16 @@ class S3ServiceTest {
   void uploadFileShouldCreateFileAndReturnUrl() throws IOException {
     // given
     createBucket("third-bucket");
-    ByteArrayOutputStream fileStream = new ByteArrayOutputStream();
-    byte[] fileContent = "content".getBytes();
+    final ByteArrayOutputStream fileStream = new ByteArrayOutputStream();
+    final byte[] fileContent = "content".getBytes();
     fileStream.write(fileContent);
 
     // when
-    final String result = s3Service.uploadFile("third-bucket", "file", fileStream);
+    final String result = s3Service.uploadFile("third-bucket", "file.txt", fileStream);
 
     // then
-    final byte[] uploadedFileBytes = getFileAsBytes("third-bucket", "file");
+    // TODO use result
+    final byte[] uploadedFileBytes = getFileAsBytes("third-bucket", "file.txt");
     assertThat(uploadedFileBytes).isEqualTo(fileContent);
   }
 

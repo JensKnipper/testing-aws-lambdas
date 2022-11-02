@@ -20,12 +20,12 @@ public class EventHandler implements RequestHandler<Input, Output> {
     final URI s3EndpointOverride = EnvironmentHelper.getEnvOrDefault("S3_ENDPOINT_OVERRIDE", null);
 
     final String maxDimensionProperty = System.getenv("MAX_DIMENSION");
-    final var maxDimension = Integer.parseInt(maxDimensionProperty);
+    final int maxDimension = Integer.parseInt(maxDimensionProperty);
 
     final AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.create();
 
-    S3Service s3Service = new S3Service(s3EndpointOverride, credentialsProvider);
-    ImageService imageService = new ImageService(maxDimension);
+    final S3Service s3Service = new S3Service(s3EndpointOverride, credentialsProvider);
+    final ImageService imageService = new ImageService(maxDimension);
 
     this.eventHandlingService = new EventHandlingService(s3Service, imageService);
   }

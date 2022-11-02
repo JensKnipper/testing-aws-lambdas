@@ -74,16 +74,16 @@ public class ComponentTestIT {
   void testHappyPath() throws IOException {
     // given
     createBucket("bucket");
-    uploadFile("bucket", "image.jpg", "src/test/resources/image.jpg");
+    uploadFile("bucket", "image.png", "src/test/resources/image.png");
 
     // when
-    InvokeResponse response = invokeLambda("src/test/resources/componenttest.json");
+    final InvokeResponse response = invokeLambda("src/test/resources/componenttest.json");
 
     // then
     assertThat(response.statusCode()).isEqualTo(200);
 
-    var resultAsJson = new String(response.payload().asByteArray());
-    BufferedImage resizedImage = getImage(resultAsJson);
+    final String resultAsJson = new String(response.payload().asByteArray());
+    final BufferedImage resizedImage = getImage(resultAsJson);
     assertThat(resizedImage.getHeight()).isLessThanOrEqualTo(MAX_DIMENSION);
     assertThat(resizedImage.getWidth()).isLessThanOrEqualTo(MAX_DIMENSION);
   }
@@ -114,6 +114,7 @@ public class ComponentTestIT {
                             new FileInputStream("target/testing-aws-lambdas-1.0.jar")))
                     .build())
             .environment(Environment.builder().variables(variables).build())
+            .timeout(10)
             .build();
 
     final CreateFunctionResponse response = getLambdaClient().createFunction(request);
@@ -146,7 +147,7 @@ public class ComponentTestIT {
     s3Client.createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
   }
 
-  private void uploadFile(final String bucketName, String key, String linkToFile) {
+  private void uploadFile(final String bucketName, final String key, final String linkToFile) {
     final S3Client s3Client = getS3Client();
     s3Client.putObject(
         PutObjectRequest.builder().bucket(bucketName).key(key).build(),
@@ -164,15 +165,14 @@ public class ComponentTestIT {
     return s3Client;
   }
 
-  private BufferedImage getImage(String resultAsJson) throws IOException {
-    Output output = objectMapper.readValue(resultAsJson, Output.class);
-    URL localImageUrl =
+  private BufferedImage getImage(final String resultAsJson) throws IOException {
+    final Output output = objectMapper.readValue(resultAsJson, Output.class);
+    final URL localImageUrl =
         new URL(
             output
                 .getFileLink()
                 .replace("localstack", "localhost")
                 .replace("4566", localStack.getMappedPort(4566).toString()));
-    BufferedImage resizedImage = ImageIO.read(localImageUrl);
-    return resizedImage;
+    return ImageIO.read(localImageUrl);
   }
 }
