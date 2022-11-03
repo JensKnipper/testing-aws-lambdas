@@ -14,7 +14,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jackson.version>2.13.4</jackson.version>
+        <awssdk.version>2.17.293</awssdk.version>
         <testcontainers.version>1.17.5</testcontainers.version>
     </properties>
 
@@ -25,38 +25,6 @@
             <version>1.2.1</version>
         </dependency>
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-events</artifactId>
-            <version>3.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <scope>compile</scope>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.19.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.3</version>
-
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>2.0.3</version>
@@ -64,61 +32,38 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>apache-client</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>auth</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>http-client-spi</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>regions</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>sdk-core</artifactId>
-            <version>2.17.293</version>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>secretsmanager</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.12.322</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-secretsmanager</artifactId>
-            <scope>test</scope>
-            <version>1.12.322</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.shared</groupId>
-            <artifactId>maven-invoker</artifactId>
-            <version>3.2.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock-jre8</artifactId>
-            <version>2.34.0</version>
+            <version>1.12.332</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -128,22 +73,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.4.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.9.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- required for running tests in intellij -->
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -167,18 +105,36 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>lambda</artifactId>
-            <version>2.17.293</version>
+            <version>${awssdk.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>17.0.0</version>
+            <version>23.0.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

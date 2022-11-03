@@ -42,8 +42,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 // TODO use IT to execute in maven verify cycle
 
 @Testcontainers
-public class ComponentTestIT {
-  private static final Logger LOG = LoggerFactory.getLogger(ComponentTestIT.class);
+public class ComponentIT {
+  private static final Logger LOG = LoggerFactory.getLogger(ComponentIT.class);
   private static final String localstackNetworkAlias = "localstack";
   public static final int MAX_DIMENSION = 300;
 
@@ -155,14 +155,12 @@ public class ComponentTestIT {
   }
 
   private S3Client getS3Client() {
-    final S3Client s3Client =
-        S3Client.builder()
-            .httpClientBuilder(ApacheHttpClient.builder())
-            .region(Region.EU_CENTRAL_1)
-            .endpointOverride(localStack.getEndpointOverride(Service.S3))
-            .credentialsProvider(credentialsProvider)
-            .build();
-    return s3Client;
+    return S3Client.builder()
+        .httpClientBuilder(ApacheHttpClient.builder())
+        .region(Region.EU_CENTRAL_1)
+        .endpointOverride(localStack.getEndpointOverride(Service.S3))
+        .credentialsProvider(credentialsProvider)
+        .build();
   }
 
   private BufferedImage getImage(final String resultAsJson) throws IOException {
